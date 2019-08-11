@@ -16,6 +16,13 @@ Example run:
 = 3_1/2
 */
 class FractionCalculator {
+	/*
+	 * Node class is use to represent the mix fraction. A format mix fraction number hash follow property:
+	 * 1. the sign of whole and numerator is same, like the - 3_1/2, the whole will be -3, numerator will be -1;
+	 * 2. the denominator will always be positive;
+	 * 3. the denominator will never be zero or negative;
+	 * 4. improper fraction is allowed during calculation or as input, but after format, abs of numerator will be smaller than denominator
+	 * */
   static class Node {
     int whole = 0;
     int numerator = 0;
@@ -25,7 +32,7 @@ class FractionCalculator {
 
     }
     
-    //2_3/8
+    // like 2_3/8, whole will be 2, numerator will be 3, denominator will be 8
     public Node(String mix) {
     	int underScoreIdx = mix.indexOf('_');
 		int slashIdx = mix.indexOf('/');
@@ -75,7 +82,7 @@ class FractionCalculator {
       int gcd = gcd(this.numerator, this.denominator);
       this.numerator /= gcd;
       this.denominator /= gcd;
-      // the sign of format varable should be same
+      // the sign of format fraction should be same
       if (this.whole * this.numerator < 0) {
         if (this.whole < 0) {
         	this.whole += 1;
@@ -89,7 +96,7 @@ class FractionCalculator {
     }
   }// end Node
 
-
+  // add
   public static Node add(Node left, Node right) {
     Node res = new Node();
     res.whole = left.whole + right.whole;
@@ -99,6 +106,7 @@ class FractionCalculator {
     return res.format();
   }
 
+  // multiple
   public static Node multiple(Node left, Node right) {
     Node res = new Node();
     res.numerator = (left.whole * left.denominator + left.numerator) * (right.whole * right.denominator + right.numerator);
@@ -106,12 +114,13 @@ class FractionCalculator {
     return res.format();
   }
 
-// greatest common divisor
+  // greatest common divisor
   public static int gcd(int a, int b) {
     if (b == 0) return a;
     return gcd(b, a % b);
   }
-// least common multiple
+
+  // least common multiple
   public static int lcm(int a, int b) {
     return (a*b) / gcd(b, a % b);
   }
